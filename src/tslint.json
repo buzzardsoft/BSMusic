@@ -1,0 +1,6 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "space-before-function-paren": true,
+    }
+}
