@@ -1,14 +1,13 @@
-import createError = require('http-errors');
 import express = require('express');
-import path = require('path');
+import createError = require('http-errors');
 // var cookieParser = require('cookie-parser');
 import logger = require('morgan');
+import path = require('path');
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 
 const app: express.Application = express();
-
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -17,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.json({ 'message': 'hello' });
+    res.json({ message: 'hello' });
 });
 // app.use('/users', usersRouter);
 
@@ -37,8 +36,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     res.render('error');
 });
 
-
-let port: number = parseInt(process.env.PORT || '3000', 10);
+const port: number = parseInt(process.env.PORT || '3000', 10);
 app.set('port', port);
 
 app.listen(port, () => {
