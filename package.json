@@ -2,9 +2,13 @@
   "name": "mymusic",
   "version": "0.0.0",
   "private": true,
+  "main": "./dist/app.js",
   "scripts": {
     "start": "node ./dist/app.js",
-    "watch": "tsc -w -p ./src"
+    "watch": "tsc -w -p ./src",
+    "postinstall": "tsc -p ./src",
+    "debug": "nodemon --legacy-watch --watch ./dist --inspect=0.0.0.0:5858 --nolazy ./dist/app.js",
+    "docker-debug": "docker-compose up"
   },
   "dependencies": {
     "express": "~4.16.0",
@@ -15,6 +19,7 @@
     "@types/express": "^4.16.1",
     "@types/http-errors": "^1.6.1",
     "@types/morgan": "^1.7.35",
+    "nodemon": "^1.19.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5",
     "typescript-tslint-plugin": "^0.3.1"
