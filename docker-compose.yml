@@ -1,11 +1,12 @@
-version: "2"
+version: "3"
 
 services:
   web:
-    build: .
+    image: node:12.1.0-slim
     command: npm run debug
     volumes:
-      - ./dist:/server/dist
+      - .:/server
+    working_dir: /server
     ports:
       - "3000:3000"
       - "5858:5858"
