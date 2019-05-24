@@ -1,24 +1,21 @@
 import express = require('express');
 import createError = require('http-errors');
-// var cookieParser = require('cookie-parser');
 import logger = require('morgan');
 import path = require('path');
 
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
+import albumsRouter  = require('./albums/routes');
+import artistsRouter = require('./artists/routes');
+import songsRouter   = require('./songs/routes');
 
 const app: express.Application = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.json({ message: 'hello' });
-});
-// app.use('/users', usersRouter);
+app.use('/albums', albumsRouter);
+app.use('/artists', artistsRouter);
+app.use('/songs', songsRouter);
 
 // catch 404 and forward to error handler
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
