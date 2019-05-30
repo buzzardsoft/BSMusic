@@ -1,7 +1,6 @@
 import express = require('express');
 import createError = require('http-errors');
 import logger = require('morgan');
-import path = require('path');
 
 import albumsRouter  = require('./albums/routes');
 import artistsRouter = require('./artists/routes');
