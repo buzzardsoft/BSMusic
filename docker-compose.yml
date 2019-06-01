@@ -1,8 +1,9 @@
 version: "3"
 
 services:
-  web:
+  api:
     image: node:12.1.0-slim
+    container_name: "mymusic_api"
     command: npm run debug
     volumes:
       - .:/server
@@ -10,18 +11,13 @@ services:
     ports:
       - "3000:3000"
       - "5858:5858"
-  localstack:
-    image: localstack/localstack
-    ports:
-      - "4567-4584:4567-4584"
-      - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
-    environment:
-      - SERVICES=s3
-      - DEBUG=${DEBUG- }
-      - DATA_DIR=/tmp/localstack/data
-      - PORT_WEB_UI=${PORT_WEB_UI- }
-      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
-      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
-      - DOCKER_HOST=unix:///var/run/docker.sock
+  postgres:
+    image: postgres:10.7
+    container_name: "mymusic_postgres"
+    restart: always
     volumes:
-      - /tmp/localstack:/tmp/localstack
+      - mymusic_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  mymusic_data:
