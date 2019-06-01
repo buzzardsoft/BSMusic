@@ -9,7 +9,7 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
         .upload(uuid.v4(), req)
         .then(() => {
             // TODO: need to write song to database
-            // TODO: probably need a JSON payload to reference file
+            // TODO: probably need to return a JSON payload to reference file
             res.sendStatus(201);
         })
         .catch((err: Error) => {
@@ -26,8 +26,18 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get('/:song_id', (req: Request, res: Response, next: NextFunction) => {
-    // TODO: return JSON song metadata
-    res.sendStatus(404);
+    const songID: string = req.param('song_id');
+    if (!songID) {
+        res.sendStatus(400);
+        return;
+    }
+
+    bucket
+        .getObjectStream(req.param('song_id'))
+        .pipe(res);
+
+    // TODO: error handling?
+    // TODO: content type response?
 });
 
 router.get('/:song_id/file', (req: Request, res: Response, next: NextFunction) => {
