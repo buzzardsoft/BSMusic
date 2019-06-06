@@ -1,16 +1,38 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import * as uuid from 'uuid';
 import { bucket } from '../bucket';
+import * as database from '../database';
 
 const router: Router = Router();
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
+    const songID: string = uuid.v4();
     bucket
-        .upload(uuid.v4(), req)
+        .upload(songID, req)
+        .then((songKey: string) => {
+            return database
+                .query(
+                    `
+                    INSERT INTO song ( id, key )
+                         VALUES ( :id, :key ) ;
+                    `,
+                    {
+                        replacements: {
+                            id: songID,
+                            key: songKey
+                        }
+                    }
+                );
+        })
         .then(() => {
             // TODO: need to write song to database
             // TODO: probably need to return a JSON payload to reference file
-            res.sendStatus(201);
+
+            res
+                .json({
+                    id: songID
+                })
+                .sendStatus(201);
         })
         .catch((err: Error) => {
             // TODO: needs more selective error returns

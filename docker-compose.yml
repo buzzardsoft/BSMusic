@@ -17,6 +17,7 @@ services:
     restart: always
     volumes:
       - mymusic_data:/var/lib/postgresql/data
+      - ./deployment/local/init.sql:/docker-entrypoint-initdb.d/10-init.sql
     ports:
       - "5432:5432"
 volumes:

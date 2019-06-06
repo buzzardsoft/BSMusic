@@ -9,6 +9,9 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/src/app.ts",
+            "preLaunchTask": "npm: compile",
+            "sourceMaps": true,
+            "smartStep": true,
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ],

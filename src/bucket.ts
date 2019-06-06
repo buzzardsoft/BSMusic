@@ -10,8 +10,8 @@ export class Bucket {
     }
 
     // upload to a key in the S3 bucket. The body can be a stream
-    public upload(key: string, body: S3.Body): Promise<S3.ManagedUpload.SendData> {
-        return new Promise((resolve: (value: S3.ManagedUpload.SendData) => void, reject: (err: Error) => void) => {
+    public upload(key: string, body: S3.Body): Promise<string> {
+        return new Promise((resolve: (value: string) => void, reject: (err: Error) => void) => {
             this.s3.upload({
                 Body: body,
                 Bucket: this.bucketName,
@@ -20,7 +20,7 @@ export class Bucket {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(data);
+                    resolve(data.Key);
                 }
             });
         });
