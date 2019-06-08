@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "compile": "tslint --project . && tsc",
-    "watch": "tsc -w -p ./src",
-    "postinstall": "tsc -p ./src",
+    "watch": "tsc -w -p .",
+    "postinstall": "tsc -p .",
     "debug": "nodemon --legacy-watch --watch ./dist --inspect=0.0.0.0:5858 --nolazy ./dist/app.js",
     "docker-debug": "docker-compose up"
   },

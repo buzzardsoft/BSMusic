@@ -21,3 +21,10 @@ To tear down your local environment, use:
 
     docker-compose down
 
+You'll need your AWS environment variables set up via your .profile or .bashrc
+
+    export AWS_REGION=$(aws configure get region --profile default)
+    export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile default)
+    export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key --profile default)
+
+

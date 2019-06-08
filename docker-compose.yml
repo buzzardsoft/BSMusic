@@ -11,6 +11,10 @@ services:
     ports:
       - "3000:3000"
       - "5858:5858"
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
   postgres:
     image: postgres:10.7
     container_name: "mymusic_postgres"
