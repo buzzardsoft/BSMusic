@@ -1,4 +1,4 @@
-MyMusic is a system which allows you to store your own music in a centralized location. The intent is ultimately to have web, iOS, Mac, and tvOS access to your music so you can play and download it from anywhere.
+BSMusic is a system which allows you to store your own music in a centralized location. The intent is ultimately to have web, iOS, Mac, and tvOS access to your music so you can play and download it from anywhere.
 
 This is the server backend which provides a REST API that handles ingestion of song files and the expected operations for accessing a user's songs.
 
@@ -21,7 +21,7 @@ To tear down your local environment, use:
 
     docker-compose down
 
-You'll need your AWS environment variables set up via your .profile or .bashrc
+You'll need your AWS environment variables set up via your .profile or .bashrc. You can hardwire them or do something like the following to pull the default profile settings.
 
     export AWS_REGION=$(aws configure get region --profile default)
     export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile default)

@@ -3,7 +3,7 @@ version: "3"
 services:
   api:
     image: node:12.1.0-slim
-    container_name: "mymusic_api"
+    container_name: "bsmusic_api"
     command: npm run debug
     volumes:
       - .:/server
@@ -17,12 +17,16 @@ services:
       - AWS_REGION=${AWS_REGION}
   postgres:
     image: postgres:10.7
-    container_name: "mymusic_postgres"
+    container_name: "bsmusic_postgres"
     restart: always
+    environment:
+      - POSTGRES_DB=bsmusic
+      - POSTGRES_USER=bsmusic_admin
+      - POSTGRES_PASSWORD=bsmusic_password
     volumes:
-      - mymusic_data:/var/lib/postgresql/data
+      - bsmusic_data:/var/lib/postgresql/data
       - ./deployment/local/init.sql:/docker-entrypoint-initdb.d/10-init.sql
     ports:
       - "5432:5432"
 volumes:
-  mymusic_data:
+  bsmusic_data:

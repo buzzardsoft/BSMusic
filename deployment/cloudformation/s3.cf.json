@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "S3 bucket to hold files for MyMusic",
+  "Description": "S3 bucket to hold files for BSMusic",
   "Resources": {
     "Bucket": {
       "Type": "AWS::S3::Bucket"
