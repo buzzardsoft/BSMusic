@@ -35,6 +35,7 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
                 .sendStatus(201);
         })
         .catch((err: Error) => {
+            console.log('failed to upload song:', err);
             // TODO: needs more selective error returns
             res.sendStatus(500);
         });

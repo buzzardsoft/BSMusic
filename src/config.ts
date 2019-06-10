@@ -22,11 +22,11 @@ export class Config {
     }
 
     public getDatabaseUsername(): string {
-        return this.configuration.DATABASE_ADMIN_USERNAME;
+        return this.configuration.DATABASE_USERNAME;
     }
 
     public getDatabasePassword(): string {
-        return this.configuration.DATABASE_ADMIN_PASSWORD;
+        return this.configuration.DATABASE_PASSWORD;
     }
 }
 
