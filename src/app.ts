@@ -5,7 +5,7 @@ import database = require('./database');
 
 import albumsRouter  = require('./albums/routes');
 import artistsRouter = require('./artists/routes');
-import songsRouter   = require('./songs/routes');
+import songsModule   = require('./songs');
 
 const app: express.Application = express();
 
@@ -17,9 +17,10 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/albums', albumsRouter);
 app.use('/artists', artistsRouter);
-app.use('/songs', songsRouter);
 
-app.use('/test', (req: express.Request, res: express.Response, _next: express.NextFunction): void => {
+songsModule.init(database, app);
+
+app.use('/test', (req: express.Request, res: express.Response): void => {
     database
         .query(' SELECT 1 ; ')
         .then(() => {
