@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import uuid = require('uuid');
 import { bucket } from '../bucket';
-import * as database from '../database';
-import { ISong, SongsModel } from './model';
+import { ISong, SONG_NOT_FOUND_ERROR, SongsModel } from './model';
 
 let songsModel: SongsModel;
 
@@ -65,15 +64,37 @@ export function init(model: SongsModel): Router {
             return;
         }
 
+        return songsModel
+            .querySongByID(songID)
+            .then((song: ISong) => {
+                res.json(song);
+            })
+            .catch((err: Error) => {
+                switch (err.name) {
+                    case SONG_NOT_FOUND_ERROR:
+                        res.sendStatus(404);
+                        break;
+                    default:
+                        res.sendStatus(500);
+                        break;
+                }
+            });
+    });
+
+    router.get('/:song_id/file', (req: Request, res: Response, next: NextFunction) => {
+        const songID: string = req.param('song_id');
+        if (!songID) {
+            res.sendStatus(400);
+            return;
+        }
+
         bucket
             .getObjectStream(req.param('song_id'))
             .pipe(res);
 
         // TODO: error handling?
         // TODO: content type response?
-    });
 
-    router.get('/:song_id/file', (req: Request, res: Response, next: NextFunction) => {
         // TODO: return binary song data
         res.sendStatus(404);
     });
