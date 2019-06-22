@@ -15,7 +15,6 @@ export function init(model: SongsModel, s3Bucket: Bucket ): Router {
     router.post('/', (req: Request, res: Response, next: NextFunction) => {
         const songID: string = uuid.v4();
 
-        // TODO: inject bucket class
         bucket
             .upload(songID, req)
             .then((songKey: string) => {
@@ -49,7 +48,7 @@ export function init(model: SongsModel, s3Bucket: Bucket ): Router {
             .querySongs()
             .then((songs: ISong[]) => {
                 res.json({
-                    songs: [],
+                    songs: songs || [],
                 });
             })
             .catch((err: Error) => {
@@ -66,12 +65,13 @@ export function init(model: SongsModel, s3Bucket: Bucket ): Router {
             return;
         }
 
-        return songsModel
+        songsModel
             .querySongByID(songID)
             .then((song: ISong) => {
                 res.json(song);
             })
             .catch((err: Error) => {
+                console.log('failed to query song by id:', songID, 'error:', err);
                 switch (err.name) {
                     case SONG_NOT_FOUND_ERROR:
                         res.sendStatus(404);
@@ -90,19 +90,49 @@ export function init(model: SongsModel, s3Bucket: Bucket ): Router {
             return;
         }
 
-        bucket
-            .getObjectStream(req.param('song_id'))
-            .pipe(res);
-
-        // TODO: error handling?
-        // TODO: content type response?
-
-        // TODO: return binary song data
-        res.sendStatus(404);
+        songsModel
+            .querySongByID(songID)
+            .then((song: ISong) => {
+                // TODO: content type?
+                return bucket
+                    .getObjectStream(song.key)
+                    .pipe(res);
+            })
+            .catch((err: Error) => {
+                console.log('failed to download song file for id:', songID, 'error:', err);
+                switch (err.name) {
+                    case SONG_NOT_FOUND_ERROR:
+                        res.sendStatus(404);
+                        break;
+                    default:
+                        res.sendStatus(500);
+                        break;
+                }
+            });
     });
 
     router.delete('/:song_id', (req: Request, res: Response, next: NextFunction) => {
-        res.sendStatus(404);
+        const songID: string = req.param('song_id');
+        if (!songID) {
+            res.sendStatus(400);
+            return;
+        }
+
+        songsModel
+            .querySongByID(songID)
+            .then((song: ISong) => {
+                return bucket.delete(song.key);
+            })
+            .then(() => {
+                return songsModel.deleteSong(songID);
+            })
+            .then(() => {
+                res.sendStatus(204);
+            })
+            .catch((err: Error) => {
+                console.log('failed to delete song for id:', songID, 'error:', err);
+                res.sendStatus(500);
+            });
     });
 
     return router;

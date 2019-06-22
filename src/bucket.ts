@@ -33,5 +33,19 @@ export class Bucket {
         })
         .createReadStream();
     }
-}
 
+    public delete(key: string): Promise<void> {
+        return this.s3
+            .deleteObject({
+                Bucket: this.bucketName,
+                Key: key
+            })
+            .promise()
+            .then(() => {
+                return Promise.resolve();
+            })
+            .catch((err: Error) => {
+                return Promise.reject(err);
+            });
+    }
+}

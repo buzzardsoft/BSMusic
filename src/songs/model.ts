@@ -36,6 +36,22 @@ export class SongsModel {
             });
     }
 
+    public deleteSong(songID: string): Promise<void> {
+        assert(songID);
+
+        return this.db
+            .query(
+                `
+                DELETE FROM song
+                      WHERE id = :id
+                `,
+                { replacements: { id: songID } }
+            )
+            .then(() => {
+                return Promise.resolve();
+            });
+    }
+
     public querySongs(): Promise<ISong[]> {
         return this.db
             .query(
@@ -44,7 +60,7 @@ export class SongsModel {
                   FROM song ;
                 `
             )
-            .then((rows: unknown[]): ISong[] => {
+            .spread((rows: unknown[]): ISong[] => {
                 // database and ISong currently match, no need to remap
                 return (rows || []) as ISong[];
             });
@@ -66,7 +82,7 @@ export class SongsModel {
                     }
                 }
             )
-            .then((rows: unknown[]): Promise<ISong> => {
+            .spread((rows: unknown[]): Promise<ISong> => {
                 if (!rows || rows.length !== 1) {
                     return Promise.reject({
                         name: SONG_NOT_FOUND_ERROR,
