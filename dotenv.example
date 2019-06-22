@@ -1,0 +1,42 @@
+#
+#  Should be copied to a file called .env, and then filled in with your
+#  custom values for local development
+#
+
+
+#
+# S3_BUCKET_NAME
+#   - the name of the S3 bucket which will hold your music files, etc.
+#   - You will need to have one of these even if you're doing local development
+#
+S3_BUCKET_NAME=mymusic-bucketname
+
+#
+# DATABASE_HOST
+#   - the host for the Postgres database, or the docker container name from docker-compose
+#
+DATABASE_HOST=bsmusic_postgres
+
+#
+# DATABASE_PORT
+#   - the port for the Postgres database
+#
+DATABASE_PORT=5432
+
+#
+# DATABASE_NAME
+#   - the name of the database
+#
+DATABASE_NAME=bsmusic
+
+#
+# DATABASE_USERNAME
+#   - The username for accessing the database as a non-administrator
+#
+DATABASE_USERNAME=bsmusic_app
+
+#
+# DATABASE_PASSWORD
+#   - The password for accessing the database as a non-administrator
+#
+DATABASE_PASSWORD=bsmusic_password
