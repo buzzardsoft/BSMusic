@@ -35,4 +35,3 @@ export class Bucket {
     }
 }
 
-export const bucket = new Bucket(config.getS3BucketName());

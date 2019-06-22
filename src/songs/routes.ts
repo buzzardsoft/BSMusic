@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import uuid = require('uuid');
-import { bucket } from '../bucket';
+import { Bucket } from '../bucket';
 import { ISong, SONG_NOT_FOUND_ERROR, SongsModel } from './model';
 
 let songsModel: SongsModel;
+let bucket: Bucket;
 
-export function init(model: SongsModel): Router {
+export function init(model: SongsModel, s3Bucket: Bucket ): Router {
     const router: Router = Router();
 
     songsModel = model;
+    bucket = s3Bucket;
 
     router.post('/', (req: Request, res: Response, next: NextFunction) => {
         const songID: string = uuid.v4();
