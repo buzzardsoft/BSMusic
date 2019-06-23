@@ -4,7 +4,8 @@ import { Sequelize } from 'sequelize';
 
 export interface ISong {
     id: string;     // uuid
-    key: string;    // S3 bucket key
+    key: string;    // S3 bucket key,
+    metadata?: any;  // audio metadata
 }
 
 export const SONG_NOT_FOUND_ERROR: string = 'SONG_NOT_FOUND';
@@ -21,13 +22,14 @@ export class SongsModel {
         return this.db
             .query(
                 `
-                INSERT INTO song ( id, key )
-                    VALUES ( :id, :key ) ;
+                INSERT INTO song ( id, key, metadata )
+                    VALUES ( :id, :key, :metadata ) ;
                 `,
                 {
                     replacements: {
                         id: song.id,
-                        key: song.key
+                        key: song.key,
+                        metadata: song.metadata || {}
                     }
                 }
             )

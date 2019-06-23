@@ -20,6 +20,7 @@
     "express": "^4.17.1",
     "http-errors": "^1.7.2",
     "morgan": "^1.9.0",
+    "music-metadata": "^4.1.1",
     "pg": "~7.11.0",
     "sequelize": "~5.8.7",
     "uuid": "^3.3.2"
