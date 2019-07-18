@@ -1,13 +1,30 @@
-BSMusic is a system which allows you to store your own music in a centralized location. The intent is ultimately to have web, iOS, Mac, and tvOS access to your music so you can play and download it from anywhere.
+
+
+# Overview
+
+BSMusic is a system which allows you to store your own music files in a centralized location. The intent is ultimately to have web, iOS, Mac, and tvOS access to your music so you can play and download it from anywhere.
 
 This is the server backend which provides a REST API that handles ingestion of song files and the expected operations for accessing a user's songs.
 
+# Project Status
+
+**Beginnings**. This side project is currently at a very early stage, where functionality is in various phases of being tied together while I'm also just starting to play with Docker a little.
+
+Rough roadmap:
+
+* Unit and integration test infrastructure - and actual tests!
+* Extract album art for storage in S3
+* Implement routes to access album art
+* Implement querying/filtering/grouping
+* Look at dropping Bluebird (or mostly dropping it except for collection operations)
+* Deployment work
+* Better handling of exceptions, i.e. failed extractions, etc.?
+* Move song metadata extraction to its own service, outside of the main app?
+* User accounts, "family sharing", and song ownership
+
 # Deploying to ElasticBeanstalk
 
-* Compress dist, Dockerfile, package.json, and package-lock.json
-* Create an ElasticBeanstalk environment and use that zip as the application archive
-* More to come about provided scripts to help with this...
-
+TBD
 
 # Local Development
 

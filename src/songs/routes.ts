@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import * as mm from 'music-metadata';
 import uuid = require('uuid');
 import { Bucket } from '../bucket';
 import { ISong, SONG_NOT_FOUND_ERROR, SongsModel } from './model';
+import { extractSongMetadata, ISongExtractorMetadata } from './songExtractor';
 
 let songsModel: SongsModel;
 let bucket: Bucket;
@@ -26,18 +26,16 @@ export function init(model: SongsModel, s3Bucket: Bucket ): Router {
 
                 // TODO: Metadata parsing should probably be queued and handled elsewhere asynchronously.
                 // Currently re-reading song from S3 and streaming through parser
-                return mm
-                    .parseStream(bucket.getObjectStream(songKey))
-                    .then(((metadata: mm.IAudioMetadata) => {
+                return extractSongMetadata(songKey, bucket)
+                    .then((metadata: ISongExtractorMetadata) => {
                         song.metadata = metadata;
                         return Promise.resolve(song);
-                    }));
+                    });
             })
             .then((song: ISong) => {
                 return songsModel.insertSong(song);
             })
             .then(() => {
-                // TODO: probably need to return a JSON payload to reference file
                 res
                     .json({
                         id: songID
@@ -46,6 +44,7 @@ export function init(model: SongsModel, s3Bucket: Bucket ): Router {
             })
             .catch((err: Error) => {
                 console.log('failed to upload song:', err);
+
                 // TODO: needs more selective error returns
                 res.sendStatus(500);
             });
