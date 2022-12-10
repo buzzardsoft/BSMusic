@@ -17,7 +17,7 @@
     "bluebird": "^3.5.5",
     "config": "^3.1.0",
     "dotenv": "^8.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "http-errors": "^1.7.2",
     "morgan": "^1.9.0",
     "music-metadata": "^4.1.1",
